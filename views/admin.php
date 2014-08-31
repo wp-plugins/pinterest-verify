@@ -12,16 +12,15 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
 ?>
 
 <div class="wrap">
 
 	<div id="pvr-settings">
 		<div id="pvr-settings-content">
-
-			<?php screen_icon( 'pinterest-32' ); ?>
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 			<p>
