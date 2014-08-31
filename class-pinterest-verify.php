@@ -8,8 +8,9 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
 
 class Pinterest_Verify {
 
@@ -20,7 +21,7 @@ class Pinterest_Verify {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.0';
+	protected $version = '1.0.2';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -75,6 +76,25 @@ class Pinterest_Verify {
 
 		// Add plugin listing "Settings" action link.
 		add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( __FILE__ ) . $this->plugin_slug . '.php' ), array( $this, 'settings_link' ) );
+		
+		// Check WP version
+		add_action( 'admin_init', array( $this, 'check_wp_version' ) );
+	}
+	
+	/**
+	 * Make sure user has the minimum required version of WordPress installed to use the plugin
+	 * 
+	 * @since 1.0.0
+	 */
+	public function check_wp_version() {
+		global $wp_version;
+		$required_wp_version = '3.5.2';
+		
+		if ( version_compare( $wp_version, $required_wp_version, '<' ) ) {
+			deactivate_plugins( PVR_MAIN_FILE ); 
+			wp_die( sprintf( __( $this->get_plugin_title() . ' requires WordPress version <strong>' . $required_wp_version . '</strong> to run properly. ' .
+				'Please update WordPress before reactivating this plugin. <a href="%s">Return to Plugins</a>.', 'pvr' ), get_admin_url( '', 'plugins.php' ) ) );
+		}
 	}
 
 	/**
@@ -101,8 +121,13 @@ class Pinterest_Verify {
 	 */
 	private function setup_constants() {
 		// Plugin Folder URL.
-		if ( ! defined( 'PVR_PLUGIN_URL' ) )
+		if ( ! defined( 'PVR_PLUGIN_URL' ) ) {
 			define( 'PVR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+		}
+		
+		if( ! defined( 'PINPLUGIN_BASE_URL' ) ) {
+			define( 'PINPLUGIN_BASE_URL', 'http://pinplugins.com/' );
+		}
 	}
 
 	/**
@@ -154,6 +179,9 @@ class Pinterest_Verify {
 
 		// Load global options settings.
 		$pvr_options = pvr_get_settings();
+		
+		// Include our misc functions we may need
+		include_once( 'includes/misc-functions.php' );
 
 		// Frontend-only includes.
 		if ( ! is_admin() )
@@ -181,14 +209,8 @@ class Pinterest_Verify {
 	public function enqueue_admin_styles() {
 
 		if ( $this->viewing_this_plugin() ) {
-			// Plugin admin custom Bootstrap CSS. Tack on plugin version.
-			wp_enqueue_style( $this->plugin_slug .'-bootstrap', plugins_url( 'css/bootstrap-custom.css', __FILE__ ), array(), $this->version );
-
-			// Plugin admin custom Flat UI CSS. Tack on plugin version.
-			wp_enqueue_style( $this->plugin_slug .'-flat-ui', plugins_url( 'css/flat-ui-custom.css', __FILE__ ), array( $this->plugin_slug .'-bootstrap' ), $this->version );
-
 			// Plugin admin CSS. Tack on plugin version.
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array( $this->plugin_slug .'-flat-ui' ), $this->version );
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), $this->version );
 		}
 	}
 
