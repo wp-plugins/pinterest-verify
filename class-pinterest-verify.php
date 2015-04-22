@@ -21,7 +21,7 @@ class Pinterest_Verify {
 	 *
 	 * @var     string
 	 */
-	protected $version = '1.0.3';
+	protected $version = '1.0.4';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -131,7 +131,7 @@ class Pinterest_Verify {
 			define( 'PVR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 		}
 		
-		if( ! defined( 'PINPLUGIN_BASE_URL' ) ) {
+		if ( ! defined( 'PINPLUGIN_BASE_URL' ) ) {
 			define( 'PINPLUGIN_BASE_URL', 'http://pinplugins.com/' );
 		}
 	}
@@ -230,7 +230,7 @@ class Pinterest_Verify {
 	 */
 	public function settings_link( $links ) {
 
-		$setting_link = sprintf( '<a href="%s">%s</a>', add_query_arg( 'page', $this->plugin_slug, admin_url( 'options-general.php' ) ), __( 'Settings', 'pvr' ) );
+		$setting_link = sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'page', $this->plugin_slug, admin_url( 'options-general.php' ) ) ), __( 'Settings', 'pvr' ) );
 		array_unshift( $links, $setting_link );
 
 		return $links;

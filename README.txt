@@ -1,9 +1,9 @@
 === Pinterest Verify ===
 Contributors: pderksen, nickyoung87
 Tags: pinterest, pinterest verify, pinterest verification, meta tag, verify, verification
-Requires at least: 3.8.5
-Tested up to: 4.1
-Stable tag: trunk
+Requires at least: 3.9.3
+Tested up to: 4.2
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Now pinners will see the verification checkmark AND grant you access to Pinteres
 
 That's all there is to it!
 
-[Follow this project on Github](https://github.com/pderksen/WP-Pinterest-Verify).
+[Follow this project on Github](https://github.com/pderksen/WP-Pinterest-Verify)
 
 == Installation ==
 
@@ -61,6 +61,11 @@ See the plugin settings page for further instructions.
 2. Sample HTML source meta tag output on public front page.
 
 == Changelog ==
+
+= 1.0.4 - April 22, 2015 =
+
+* Updated calls to add_query_arg to prevent any possible XSS attacks.
+* Tested up to WordPress 4.2.
 
 = 1.0.3 =
 
